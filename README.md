@@ -12,8 +12,7 @@ uvicorn==0.24.0
 sqlalchemy>=2.0.31
 aiosqlite==0.19.0
 pydantic>=2.8.0
-passlib==1.7.4
-bcrypt==4.0.1
+passlib[bcrypt]==1.7.4
 pyjwt==2.8.0
 matplotlib==3.8.2
 sympy==1.12
@@ -24,15 +23,13 @@ sympy==1.12
 pip install -r requirements.txt
 ```
 
-**Примечание**: Для Python 3.13 обновлены версии (Pydantic 2.8+, SQLAlchemy 2.0.31+, FastAPI 0.112+, bcrypt 4.0.1) для избежания ошибок сборки и совместимости. Если используете Python 3.12 или ниже, можно откатить версии.
-
 ## Структура проекта
 
 - `database.py`: Настройка асинхронной БД (SQLite).
 - `models.py`: ORM-модели (User, Formula).
 - `schemas.py`: Pydantic-схемы для валидации.
 - `auth.py`: JWT-аутентификация и хэширование (bcrypt).
-- `crud.py`: Асинхронные CRUD-операции для формул.
+- `maths.py`: Асинхронные CRUD-операции для формул.
 - `main.py`: FastAPI-приложение с эндпоинтами.
 - `requirements.txt`: Зависимости.
 - `README.md`: Эта инструкция.
@@ -120,11 +117,3 @@ curl -X POST "http://127.0.0.1:8000/plot/" -H "Content-Type: application/json" -
 - 401: Неверные credentials.
 - 404: Формула не найдена.
 - 422: Неверные данные (валидация) или формула.
-
-## Возможные проблемы и решения
-- **Python 3.13**: Убедитесь в обновлённых зависимостях (см. requirements.txt).
-- **MissingGreenlet**: Добавьте `expire_on_commit=False` в `database.py`.
-- **Длина пароля**: Ограничена 72 байтами (bcrypt).
-- **Тестирование**: Используйте Swagger. Для графиков — декодируйте base64.
-
-Для вопросов или улучшений — создайте issue в репозитории!
