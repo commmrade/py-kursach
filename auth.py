@@ -12,7 +12,7 @@ from schemas import Token, UserCreate, UserLogin
 from database import get_db
 import bcrypt
 
-SECRET_KEY = "DKlsdjasj7dShds7aj"  # Change this in production
+SECRET_KEY = "DKlsdjasj7dShds7aj"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -26,17 +26,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 #     return pwd_context.hash(password)
 
 def get_password_hash(password: str) -> str:
-    # Optional: Enforce max 72 bytes to avoid silent truncation or errors in some bcrypt versions
     password_bytes = password.encode('utf-8')
-    # if len(password_bytes) > 72:
-    #     raise ValueError("Password exceeds bcrypt's 72-byte limit; truncate or reject it.")
-    
-    # Hash with automatic salting (increase rounds for more security, e.g., rounds=14)
     hashed = bcrypt.hashpw(password_bytes, bcrypt.gensalt(rounds=12))
-    return hashed.decode('utf-8')  # Store as string in your DB
+    return hashed.decode('utf-8')
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    # Re-encode both for comparison
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 async def get_user(db: AsyncSession, username: str):
